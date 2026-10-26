@@ -74,6 +74,10 @@ Targets can be `current`, `all`, `*`, a monitor connector name such as `eDP-1` o
 
 `brightness-osd` takes a value only - unlike `brightness-set`, it has no monitor target. The OSD starts on the focused output when `[osd].follow_focused_output` is enabled and stays there until the popup disappears; otherwise it appears on whichever monitors are configured under `[osd].monitors`.
 
+### Keyboard backlight
+
+`noctalia msg keyboard-backlight-up` and `noctalia msg keyboard-backlight-down` adjust every keyboard backlight by 5% of its maximum, rounded to the nearest hardware level with a minimum step of one level. Changes stop at zero and the device maximum. `keyboard-backlight-set 50` sets each keyboard backlight to 50%, and `keyboard-backlight-toggle` switches between off and full brightness.
+
 ## Night light
 
 | Action             | Command                                          | Description                                          |

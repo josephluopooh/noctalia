@@ -1398,6 +1398,11 @@ if build_tests
     dependencies: noctalia_core_dep,
     override_options: ['b_ndebug=false'],
   )
+  keyboard_backlight_integration_exe = executable('keyboard_backlight_integration_test',
+    sources: files('tests/keyboard_backlight_integration_test.cpp'),
+    dependencies: noctalia_core_dep,
+    override_options: ['b_ndebug=false'],
+  )
   secret_collection_probe_integration_exe = executable('secret_collection_probe_integration_test',
     sources: files('tests/secret_collection_probe_integration_test.cpp'),
     dependencies: noctalia_core_dep,
@@ -1415,6 +1420,15 @@ if build_tests
   )
   dbus_run_session = find_program('dbus-run-session', required: false)
   if dbus_run_session.found()
+    test('keyboard_backlight_integration',
+      dbus_run_session,
+      args: [
+        '--', 'sh', '-c',
+        'export DBUS_SYSTEM_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS"; exec "$1"',
+        'sh', keyboard_backlight_integration_exe.full_path(),
+      ],
+      depends: keyboard_backlight_integration_exe,
+    )
     test('upower_charge_limit_integration',
       dbus_run_session,
       args: [

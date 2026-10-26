@@ -529,9 +529,14 @@ namespace noctalia::cli {
     inline constexpr Command greeterSync{
         "greeter-sync", "Sync wallpaper, colors, and monitor layout to Noctalia Greeter", {}, {}, {}, {}, {}, false
     };
-    inline constexpr Command keyboardBacklightDown{
-        "keyboard-backlight-down", "Decrease all keyboard backlights by one level", {}, {}, {}, {}, {}, false
-    };
+    inline constexpr Command keyboardBacklightDown{"keyboard-backlight-down",
+                                                   "Decrease all keyboard backlights by 5% (at least one level)",
+                                                   {},
+                                                   {},
+                                                   {},
+                                                   {},
+                                                   {},
+                                                   false};
     inline constexpr Command keyboardBacklightOsd{
         "keyboard-backlight-osd",
         "Show keyboard backlight OSD without changing brightness",
@@ -555,9 +560,14 @@ namespace noctalia::cli {
     inline constexpr Command keyboardBacklightToggle{
         "keyboard-backlight-toggle", "Toggle all keyboard backlights on/off", {}, {}, {}, {}, {}, false
     };
-    inline constexpr Command keyboardBacklightUp{
-        "keyboard-backlight-up", "Increase all keyboard backlights by one level", {}, {}, {}, {}, {}, false
-    };
+    inline constexpr Command keyboardBacklightUp{"keyboard-backlight-up",
+                                                 "Increase all keyboard backlights by 5% (at least one level)",
+                                                 {},
+                                                 {},
+                                                 {},
+                                                 {},
+                                                 {},
+                                                 false};
     inline constexpr Command keyboardLayoutCycle{
         "keyboard-layout-cycle", "Switch to the next keyboard layout", {}, {}, {}, {}, {}, false
     };

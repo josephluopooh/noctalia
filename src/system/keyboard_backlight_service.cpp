@@ -174,7 +174,10 @@ bool KeyboardBacklightService::setPercent(int percent) {
 bool KeyboardBacklightService::adjustBrightness(int delta) {
   bool success = true;
   for (auto& device : m_devices) {
-    if (!setBrightness(*device, device->brightness + delta)) {
+    const int step = std::max(1, static_cast<int>(std::round(device->maxBrightness * 0.05)));
+    const int change =
+        util::clampOrdered(delta * step, -device->brightness, device->maxBrightness - device->brightness);
+    if (!setBrightness(*device, device->brightness + change)) {
       success = false;
     }
   }
