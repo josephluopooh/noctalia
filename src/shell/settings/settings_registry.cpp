@@ -30,6 +30,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <format>
+#include <glib.h>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -350,7 +351,7 @@ namespace settings {
           .path = std::move(path),
           .control = std::move(control),
           .advanced = advanced,
-          .searchText = StringUtils::toLower(searchText),
+          .searchText = normalizedSettingQuery(searchText),
       };
     }
 
@@ -388,7 +389,15 @@ namespace settings {
     return names;
   }
 
-  std::string normalizedSettingQuery(std::string_view query) { return StringUtils::toLower(query); }
+  std::string normalizedSettingQuery(std::string_view query) {
+    if (query.empty()) {
+      return {};
+    }
+    gchar* folded = g_utf8_casefold(query.data(), static_cast<gssize>(query.size()));
+    std::string result(folded);
+    g_free(folded);
+    return result;
+  }
 
   bool matchesNormalizedSettingQuery(const SettingEntry& entry, std::string_view normalizedQuery) {
     if (normalizedQuery.empty()) {

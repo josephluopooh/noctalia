@@ -1302,6 +1302,7 @@ if build_tests
     'pixel_stream_client',
     'process',
     'scheme',
+    'settings_search',
     'screenshot_region_badge',
     'screenshot_ipc_request',
     'scrollbar_geometry',
@@ -1354,6 +1355,8 @@ if build_tests
     )
     test_args = []
     if test_name == 'desktop_entry_localization'
+      test_args = [meson.project_source_root() / 'assets']
+    elif test_name == 'settings_search'
       test_args = [meson.project_source_root() / 'assets']
     elif test_name == 'i18n_supported_languages'
       test_args = [meson.project_source_root() / 'assets' / 'translations']
