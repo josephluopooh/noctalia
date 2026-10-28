@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <charconv>
 #include <cmath>
+#include <cstdint>
 #include <optional>
 #include <sdbus-c++/IProxy.h>
 #include <sdbus-c++/Types.h>
@@ -172,9 +173,14 @@ bool KeyboardBacklightService::setPercent(int percent) {
 }
 
 bool KeyboardBacklightService::adjustBrightness(int delta) {
+  constexpr int kStepPercent = 5;
   bool success = true;
   for (auto& device : m_devices) {
-    if (!setBrightness(*device, device->brightness + delta)) {
+    const int step =
+        std::max(1, static_cast<int>(std::lround(static_cast<double>(device->maxBrightness) * kStepPercent / 100.0)));
+    const std::int64_t target = static_cast<std::int64_t>(device->brightness) + static_cast<std::int64_t>(delta) * step;
+    const int brightness = static_cast<int>(std::clamp<std::int64_t>(target, 0, device->maxBrightness));
+    if (!setBrightness(*device, brightness)) {
       success = false;
     }
   }
