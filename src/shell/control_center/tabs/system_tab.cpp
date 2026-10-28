@@ -880,7 +880,9 @@ void SystemTab::syncLabels() {
     m_systemLines[3]->setText(kernelLabel());
   }
   if (m_systemLines[4] != nullptr) {
-    m_systemLines[4]->setText(compositorLabel());
+    // Monitor updates will refresh this label once the async version probe resolves.
+    const auto versionLine = compositorVersionLine({});
+    m_systemLines[4]->setText(versionLine.has_value() && !versionLine->empty() ? *versionLine : compositorLabel());
   }
   if (m_systemLines[5] != nullptr) {
     const auto uptime = systemUptime();

@@ -488,7 +488,10 @@ std::optional<std::string> compositorVersionLine(std::function<void()> onResolve
   if (state == State::Resolved) {
     return version;
   }
-  pendingCallback = std::move(onResolved);
+  // A caller polling the result must not clear another tab's pending UI callback.
+  if (onResolved) {
+    pendingCallback = std::move(onResolved);
+  }
   if (state == State::Pending) {
     return std::nullopt;
   }
