@@ -120,7 +120,9 @@ void Application::onUpowerStateChangedForHooks() {
     return;
   }
   const auto& state = m_upowerService->state();
-  const auto plugged = state.isPresent ? batteryStatePlugged(state.state) : std::nullopt;
+  // Battery State can oscillate while AC stays connected; OnBattery tracks
+  // the supply transition that the plug/unplug sounds should represent.
+  const auto plugged = state.isPresent ? std::optional{!state.onBattery} : std::nullopt;
   if (plugged.has_value()) {
     if (m_prevBatteryPluggedForEvents.has_value()
         && *m_prevBatteryPluggedForEvents != *plugged
